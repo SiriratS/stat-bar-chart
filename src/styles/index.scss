@@ -1,5 +1,25 @@
-$body-color: blue;
+$defaultFontSize: 12px;
 
 body {
-  color: $body-color;
+  font-size: $defaultFontSize;
+}
+
+.example-chart-container {
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    align-self: center;
+  }
+
+  #chart {
+    align-self: center;
+
+    .bar {
+      -webkit-transition-duration: 700ms;
+      -moz-transition-duration: 700ms;
+      -o-transition-duration: 700ms;
+      transition-duration: 700ms;
+    }
+  }
 }

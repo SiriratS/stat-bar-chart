@@ -10,6 +10,9 @@ const config = {
         right: 10, 
         bottom: 40, 
         left: 60 
+    },
+    color: {
+        bar: 'red'
     }
 };
 

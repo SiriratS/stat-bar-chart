@@ -39,6 +39,9 @@ export default class BarChart {
         this.getXAxisText();
 
         this.createBars(xScale, yScale);
+        setInterval(() => { 
+            this.moveBar(yScale);
+        }, 1000);
     };
 
     createYAxis(yScale) {
@@ -53,8 +56,8 @@ export default class BarChart {
         this.mainChart.append("text")
             .attr("class", "axis-label")
             .attr("text-anchor", "end")
-            .attr("y", 15)
-            .attr("x", -(this.height / 2) + (this.config.margin.top))
+            .attr("y", 5)
+            .attr("x", -85)
             .attr("dy", "-3.0em")
             .attr("transform", "rotate(-90)")
             .text('Fund Glows');
@@ -74,8 +77,8 @@ export default class BarChart {
         this.mainChart.append("text")
             .attr("class", "axis-label")
             .attr("text-anchor", "end")
-            .attr("x", (this.width / 2) + (this.config.margin.left / 2))
-            .attr("y", this.height + 40)
+            .attr("x", 130)
+            .attr("y", 265)
             .text('Years');
     }
 
@@ -84,7 +87,17 @@ export default class BarChart {
             .data(this.data)
             .enter()
             .append('rect')
+            .attr("class", "bar")
+            .attr('y', (data) => yScale(Math.abs(data.y)))
+            .attr('fill', this.config.color.bar)
             .attr('x', (data) => xScale(data.x))
+            .attr('height', (data) => this.height - yScale(Math.abs(data.y)))
+            .attr('width', xScale.bandwidth());
+    }
+
+    moveBar(yScale) {
+        this.mainChart.selectAll('.bar')
+            .data(this.data)
             .attr('y', (data, i) => {
                 const countValue = i === 0 ? 0
                     : this.yData.slice(0, i)
@@ -94,9 +107,7 @@ export default class BarChart {
 
                 return data.y < 0 ? yScale(countValue)
                     : yScale(Math.abs(data.y)) - (this.height - yScale(countValue));
-            })
-            .attr('height', (data) => this.height - yScale(Math.abs(data.y)))
-            .attr('width', xScale.bandwidth());
+            });
     }
 
     sumValue(total, number) {
